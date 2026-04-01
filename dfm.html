@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>DFM — Digital Footprint Mirror</title>
+  <link rel="stylesheet" href="dfm.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+<div class="gridbg"></div>
+
+<!-- ══════════════════════════════════════════════
+     SCREEN 1 — LANDING
+     ══════════════════════════════════════════════ -->
+<section id="s-land" class="screen active">
+  <div class="hero card">
+    <div class="hero-eye">DigitalFootprint Mirror v2</div>
+    <h1 class="hero-h">
+      <span id="type-t"></span><span class="cursor">|</span><br>
+      <span class="grad">Cyber Exposure Intelligence</span>
+    </h1>
+    <p class="hero-sub">Quantify and eliminate your digital behavioral risk. Understand your vulnerabilities before attackers do.</p>
+    <div class="hero-cta">
+      <button class="btn btn-p" onclick="goTo('auth')">
+        <div class="pulse-r"></div>
+        🔍 Analyze Footprint
+      </button>
+      <button class="btn btn-g" onclick="goTo('auth')">Sign In</button>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat"><span class="hstat-n">6</span><span class="hstat-l">Risk Vectors</span></div>
+      <div class="hstat"><span class="hstat-n">100%</span><span class="hstat-l">Private</span></div>
+      <div class="hstat"><span class="hstat-n">Live</span><span class="hstat-l">Analysis</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SCREEN 2 — AUTH
+     ══════════════════════════════════════════════ -->
+<section id="s-auth" class="screen">
+  <div class="auth-wrap">
+    <div class="auth-top">
+      <div class="auth-ico">🛡️</div>
+      <div class="auth-title">Secure Access</div>
+      <div class="auth-sub">Your intelligence platform awaits</div>
+    </div>
+
+    <div class="auth-card card">
+      <div class="a-tabs">
+        <button class="atab on" id="at-login" onclick="switchTab('login')">Sign In</button>
+        <button class="atab"    id="at-reg"   onclick="switchTab('register')">Create Account</button>
+      </div>
+
+      <!-- LOGIN -->
+      <div class="fpanel on" id="fp-login">
+        <div class="fw">
+          <label class="fl">Username</label>
+          <input class="fi" type="text"     id="l-user" placeholder="Your username"  autocomplete="username"/>
+        </div>
+        <div class="fw">
+          <label class="fl">Password</label>
+          <input class="fi" type="password" id="l-pass" placeholder="Your password"  autocomplete="current-password"/>
+        </div>
+        <div class="al al-e" id="l-err"></div>
+        <div class="al al-s" id="l-ok"></div>
+        <button class="btn btn-p btn-w" id="btn-li" onclick="doLogin()">Sign In →</button>
+        <p class="tsm d3" style="text-align:center;margin-top:4px">
+          No account? <span class="smint" style="cursor:pointer" onclick="switchTab('register')">Create one free</span>
+        </p>
+      </div>
+
+      <!-- REGISTER -->
+      <div class="fpanel" id="fp-reg">
+        <div class="fw">
+          <label class="fl">Username</label>
+          <input class="fi" type="text"     id="r-user" placeholder="Choose a username" autocomplete="username"/>
+        </div>
+        <div class="fw">
+          <label class="fl">Password</label>
+          <input class="fi" type="password" id="r-pass" placeholder="Min 8 characters"  autocomplete="new-password"/>
+        </div>
+        <div class="fw">
+          <label class="fl">Confirm Password</label>
+          <input class="fi" type="password" id="r-conf" placeholder="Repeat password"   autocomplete="new-password"/>
+        </div>
+        <div class="al al-e" id="r-err"></div>
+        <div class="al al-s" id="r-ok"></div>
+        <button class="btn btn-m btn-w" id="btn-reg" onclick="doRegister()">Create Account →</button>
+      </div>
+    </div>
+
+    <div class="back-row">
+      <button class="btn btn-g btn-sm" onclick="goTo('land')">← Back</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SCREEN 3 — DASHBOARD
+     ══════════════════════════════════════════════ -->
+<section id="s-dash" class="screen">
+
+  <nav class="nav">
+    <span class="nav-brand">⬡ DFM</span>
+    <div class="nav-tabs">
+      <button class="ntab on" data-tab="risk" onclick="switchDashTab('risk')">🧠 Risk</button>
+      <button class="ntab"    data-tab="sim"  onclick="switchDashTab('sim')">🔥 Simulation</button>
+      <button class="ntab"    data-tab="tl"   onclick="switchDashTab('tl')">📈 Timeline</button>
+      <button class="ntab"    data-tab="bp"   onclick="switchDashTab('bp')">🧩 Blueprint</button>
+      <button class="ntab"    data-tab="br"   onclick="switchDashTab('br')">🧪 Breach</button>
+      <button class="ntab hidden" data-tab="adm" onclick="switchDashTab('adm')" id="adm-tab">⚙️ Admin</button>
+    </div>
+    <div class="nav-right">
+      <span class="nav-user" id="nav-u">—</span>
+      <span class="badge bm" id="nav-streak">🔥 0</span>
+      <button class="btn btn-g btn-sm" onclick="doLogout()">Out</button>
+    </div>
+  </nav>
+
+  <div class="dash-body">
+
+    <div class="anomaly mb12" id="anomaly-bar">
+      ⚠️ <span>Behavioral regression — risk increased 15+ points since last assessment.</span>
+    </div>
+
+    <!-- ─── TAB: RISK ──────────────────────────────────── -->
+    <div class="tab-p on" id="tab-risk">
+      <div class="rg">
+
+        <!-- LEFT MODULES -->
+        <div style="display:flex;flex-direction:column;gap:14px">
+
+          <!-- PASSWORD -->
+          <div class="card mod">
+            <div class="mod-head">
+              <div class="mod-t">🔑 Password Risk</div>
+              <div class="mod-s sred" id="sc-pw">0</div>
+            </div>
+            <div class="mod-track"><div class="mod-fill" id="bar-pw" style="width:0%"></div></div>
+            <div class="mod-ctrls">
+              <div class="slw">
+                <div class="slr"><span class="sll">Password reuse count</span><span class="slv" id="v-reuse">0</span></div>
+                <input type="range" min="0" max="20" value="0" id="sl-reuse" oninput="recalc()"/>
+              </div>
+              <div class="chks">
+                <label class="chk"><input type="checkbox" id="c-email" onchange="recalc()"/><span class="chk-l">Email password reused elsewhere</span></label>
+                <label class="chk"><input type="checkbox" id="c-bank"  onchange="recalc()"/><span class="chk-l">Banking password reused</span></label>
+                <label class="chk"><input type="checkbox" id="c-2fa"   onchange="recalc()"/><span class="chk-l">Two-factor authentication enabled</span></label>
+              </div>
+            </div>
+          </div>
+
+          <!-- SOCIAL -->
+          <div class="card mod">
+            <div class="mod-head">
+              <div class="mod-t">🌐 Social Exposure</div>
+              <div class="mod-s sred" id="sc-soc">0</div>
+            </div>
+            <div class="mod-track"><div class="mod-fill" id="bar-soc" style="width:0%"></div></div>
+            <div class="mod-ctrls">
+              <div class="chks">
+                <label class="chk"><input type="checkbox" id="c-pub"   onchange="recalc()"/><span class="chk-l">Profile is public</span></label>
+                <label class="chk"><input type="checkbox" id="c-bday"  onchange="recalc()"/><span class="chk-l">Birthday publicly visible</span></label>
+                <label class="chk"><input type="checkbox" id="c-phone" onchange="recalc()"/><span class="chk-l">Phone number visible</span></label>
+                <label class="chk"><input type="checkbox" id="c-loc"   onchange="recalc()"/><span class="chk-l">Location tagging enabled</span></label>
+              </div>
+              <div class="slw">
+                <div class="slr"><span class="sll">Posts per week</span><span class="slv" id="v-posts">0</span></div>
+                <input type="range" min="0" max="30" value="0" id="sl-posts" oninput="recalc()"/>
+              </div>
+            </div>
+          </div>
+
+          <!-- NETWORK -->
+          <div class="card mod">
+            <div class="mod-head">
+              <div class="mod-t">📡 Network Risk</div>
+              <div class="mod-s sred" id="sc-net">0</div>
+            </div>
+            <div class="mod-track"><div class="mod-fill" id="bar-net" style="width:0%"></div></div>
+            <div class="mod-ctrls">
+              <div class="chks">
+                <label class="chk"><input type="checkbox" id="c-wifi"  onchange="recalc()"/><span class="chk-l">Use public WiFi regularly</span></label>
+                <label class="chk"><input type="checkbox" id="c-bwifi" onchange="recalc()"/><span class="chk-l">Banking on public WiFi</span></label>
+                <label class="chk"><input type="checkbox" id="c-auto"  onchange="recalc()"/><span class="chk-l">Auto-connect to networks</span></label>
+                <label class="chk"><input type="checkbox" id="c-vpn"   onchange="recalc()"/><span class="chk-l">VPN enabled</span></label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT INTEL -->
+        <div class="intel">
+          <div class="card gauge-card">
+            <div class="slbl">Total Risk Score</div>
+            <div class="gauge-wrap">
+              <canvas id="cv-gauge" width="150" height="150"></canvas>
+              <div class="gauge-lbl">
+                <div class="gauge-n sviolet" id="gauge-n">0</div>
+                <div class="gauge-s">/ 100</div>
+              </div>
+            </div>
+            <div class="arch-row">
+              <span class="badge bv" id="arch-badge">Cyber Minimalist</span>
+              <span class="badge bm" id="stab-badge">⚡ 100%</span>
+            </div>
+          </div>
+
+          <!-- PHISHING -->
+          <div class="card mod">
+            <div class="mod-head">
+              <div class="mod-t">🎣 Phishing Risk</div>
+              <div class="mod-s sred" id="sc-phi">0</div>
+            </div>
+            <div class="mod-track"><div class="mod-fill" id="bar-phi" style="width:0%"></div></div>
+            <div class="mod-ctrls">
+              <div class="chks">
+                <label class="chk"><input type="checkbox" id="c-lnk" onchange="recalc()"/><span class="chk-l">Click unknown links in emails</span></label>
+                <label class="chk"><input type="checkbox" id="c-urg" onchange="recalc()"/><span class="chk-l">Trust urgency-based emails</span></label>
+                <label class="chk"><input type="checkbox" id="c-att" onchange="recalc()"/><span class="chk-l">Download unknown attachments</span></label>
+                <label class="chk"><input type="checkbox" id="c-url" onchange="recalc()"/><span class="chk-l">Always verify URLs before clicking</span></label>
+              </div>
+            </div>
+          </div>
+
+          <!-- DEVICE -->
+          <div class="card mod">
+            <div class="mod-head">
+              <div class="mod-t">💻 Device Hygiene</div>
+              <div class="mod-s sred" id="sc-dev">0</div>
+            </div>
+            <div class="mod-track"><div class="mod-fill" id="bar-dev" style="width:0%"></div></div>
+            <div class="mod-ctrls">
+              <div class="chks">
+                <label class="chk"><input type="checkbox" id="c-lock" onchange="recalc()"/><span class="chk-l">No screen lock / PIN</span></label>
+                <label class="chk"><input type="checkbox" id="c-upd"  onchange="recalc()"/><span class="chk-l">Postpone software updates</span></label>
+                <label class="chk"><input type="checkbox" id="c-av"   onchange="recalc()"/><span class="chk-l">No antivirus installed</span></label>
+                <label class="chk"><input type="checkbox" id="c-unk"  onchange="recalc()"/><span class="chk-l">Install apps from unknown sources</span></label>
+                <label class="chk"><input type="checkbox" id="c-enc"  onchange="recalc()"/><span class="chk-l">No disk encryption</span></label>
+              </div>
+            </div>
+          </div>
+
+          <div class="card chc">
+            <div class="cht">Category Breakdown</div>
+            <div class="chw" style="height:175px"><canvas id="cv-bar"></canvas></div>
+          </div>
+
+          <div class="card chc">
+            <div class="cht">Exposure Radar</div>
+            <div class="chw" style="height:195px"><canvas id="cv-radar"></canvas></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card nar mt14">
+        <div class="slbl">Behavioral Insight</div>
+        <div class="nar-t" id="nar-txt">Complete the modules above to generate your behavioral risk narrative.</div>
+      </div>
+
+      <div class="srow">
+        <button class="btn btn-p" id="btn-save" onclick="saveAssessment()">💾 Save</button>
+        <button class="btn btn-g" onclick="exportPDF()">📄 PDF</button>
+        <label class="tgw">
+          <label class="tg">
+            <input type="checkbox" id="eth-tog"/>
+            <span class="tgt"></span>
+            <span class="tgk"></span>
+          </label>
+          Privacy Mode
+        </label>
+      </div>
+    </div>
+
+    <!-- ─── TAB: SIMULATION ───────────────────────────── -->
+    <div class="tab-p" id="tab-sim">
+      <div class="slbl mb12">Attacker Perspective Simulation</div>
+      <div class="sim-layout">
+        <div class="sim-side">
+          <div class="card sim-c">
+            <div class="slbl">Config</div>
+            <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:14px">
+              <div class="between"><span class="tsm">Email reused</span><span class="badge bm" id="sim-email">—</span></div>
+              <div class="between"><span class="tsm">Risk score</span><span class="mono sviolet txs" id="sim-risk">—</span></div>
+              <div class="between"><span class="tsm">Cascade speed</span><span class="mono sred txs" id="sim-spd">—</span></div>
+            </div>
+            <button class="btn btn-p btn-w" onclick="runSim()">▶ Run Simulation</button>
+            <button class="btn btn-g btn-w mt8" onclick="resetSim()">↺ Reset</button>
+          </div>
+          <div class="card sim-c">
+            <div class="slbl">Legend</div>
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <div class="between"><span class="tsm">🔵 Email</span>    <span class="txs d3">Root node</span></div>
+              <div class="between"><span class="tsm">🟣 Social</span>   <span class="txs d3">Linked profiles</span></div>
+              <div class="between"><span class="tsm">🟠 Shopping</span> <span class="txs d3">Payment data</span></div>
+              <div class="between"><span class="tsm">🔴 Banking</span>  <span class="txs d3">Financial access</span></div>
+              <div class="between"><span class="tsm">⚫ Identity</span> <span class="txs d3">Full compromise</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="sim-box"><canvas id="atk-cv"></canvas></div>
+      </div>
+    </div>
+
+    <!-- ─── TAB: TIMELINE ──────────────────────────────── -->
+    <div class="tab-p" id="tab-tl">
+      <div class="tl-met">
+        <div class="card mc"><div class="mv" id="m-latest">—</div><div class="ml">Latest Risk</div></div>
+        <div class="card mc"><div class="mv" id="m-impr">—</div><div class="ml">Improvement</div></div>
+        <div class="card mc"><div class="mv" id="m-streak">—</div><div class="ml">Streak</div></div>
+      </div>
+      <div class="tl-grid">
+        <div class="card chc">
+          <div class="cht">Risk Over Time</div>
+          <div class="chw" style="height:235px"><canvas id="cv-line"></canvas></div>
+        </div>
+        <div class="card chc">
+          <div class="cht">3-Month Forecast</div>
+          <div class="chw" style="height:235px"><canvas id="cv-fore"></canvas></div>
+        </div>
+      </div>
+      <div class="card chc mt14">
+        <div class="cht">Stability Index</div>
+        <div class="chw" style="height:175px"><canvas id="cv-stab"></canvas></div>
+      </div>
+    </div>
+
+    <!-- ─── TAB: BLUEPRINT ─────────────────────────────── -->
+    <div class="tab-p" id="tab-bp">
+      <div class="slbl mb12">Security Blueprint</div>
+      <div class="card nar mb14">
+        <div class="nar-t" style="font-style:normal;font-size:.79rem">
+          Toggle suggestions to preview estimated risk reduction (simulation only — not saved to database).
+        </div>
+      </div>
+      <div class="bp-list" id="bp-list"></div>
+    </div>
+
+    <!-- ─── TAB: BREACH ────────────────────────────────── -->
+    <div class="tab-p" id="tab-br">
+      <div class="slbl mb12">Breach Probability Estimator</div>
+      <div class="bg2">
+        <div class="card bc">
+          <div class="bn b-low" id="br-n">0%</div>
+          <div class="bl b-low" id="br-l">—</div>
+          <div class="bt"><div class="bf b-low" id="br-f" style="width:0%"></div></div>
+          <p class="tsm d2 mt8" id="br-desc">Complete the risk engine to estimate breach probability.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div class="card sim-c">
+            <div class="slbl">Maturity Level</div>
+            <div class="mat" id="mat-list"></div>
+          </div>
+          <div class="card sim-c">
+            <div class="slbl">Security Archetype</div>
+            <div id="arch-detail"></div>
+          </div>
+          <div class="card sim-c">
+            <div class="slbl">Achievements</div>
+            <div class="gbg" id="game-bd"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── TAB: ADMIN ─────────────────────────────────── -->
+    <div class="tab-p" id="tab-adm">
+      <div class="slbl mb12">Platform Analytics</div>
+      <div class="adg">
+        <div class="card adc"><div class="adv" id="adm-u">—</div><div class="adl">Total Users</div></div>
+        <div class="card adc"><div class="adv" id="adm-a">—</div><div class="adl">Assessments</div></div>
+        <div class="card adc"><div class="adv" id="adm-r">—</div><div class="adl">Avg Risk</div></div>
+      </div>
+      <div class="adch">
+        <div class="card chc">
+          <div class="cht">Risk Distribution</div>
+          <div class="chw" style="height:235px"><canvas id="cv-adist"></canvas></div>
+        </div>
+        <div class="card chc">
+          <div class="cht">Category Averages</div>
+          <div class="chw" style="height:235px"><canvas id="cv-acat"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PDF OVERLAY -->
+<div id="pdf-ov">
+  <div class="card pdf-m">
+    <div class="pdf-t">📄 Generating Report</div>
+    <div class="pdf-s">Compiling your security intelligence report...</div>
+    <div style="display:flex;justify-content:center"><div class="spin"></div></div>
+  </div>
+</div>
+
+<script src="dfm.js"></script>
+</body>
+</html>
