@@ -20,16 +20,13 @@
 **DFM** analyzes user behavior across passwords, social exposure, networks, phishing, and devices — converting them into a **risk score (0–100)** with insights and simulations.
 
 ---
-
-> ⚠️ Backend APIs and database logic are currently under development.
-
----
 ## 🚧 STATUS
 
-diff
+```diff
 + Frontend: Completed
 ! Backend: In Progress (Flask + SQLite)
 - Deployment: Pending
+```
 
 > ⚠️ Backend APIs and database logic are currently under development.
 
@@ -37,12 +34,13 @@ diff
 
 ## 🧩 ARCHITECTURE
 
-bash
+```bash
 Frontend (HTML + CSS + JS + Chart.js)
         ⇅ Fetch API
 Backend (Flask + SQLite)
         ⇅
 Database
+```
 
 > 🧱 Monolithic Client–Server Model
 
@@ -50,21 +48,23 @@ Database
 
 ## 📁 STRUCTURE
 
-bash
+```bash
 dfm.html   # UI
 dfm.css    # Design system
 dfm.js     # Logic + charts
 dfm.py     # Backend
+```
 
 ## ⚙️ CORE ENGINE
 
-math
+```math
 TotalRisk =
 (P × 0.35) +
 (S × 0.20) +
 (N × 0.15) +
 (D × 0.15) +
 (Ph × 0.15)
+```
 
 ## 🧪 MODULES
 
@@ -121,7 +121,6 @@ Reactive → Aware → Managed → Controlled → Hardened
 ## 👩‍💻 AUTHOR
 
 **Hifza Amir**  
-Cybersecurity • Full-Stack Systems  
 
 ---
 
