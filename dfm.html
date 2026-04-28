@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Digital Footprint Mirror — Cyber Behavior Intelligence</title>
+  <link rel="stylesheet" href="dfm.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+  <!-- ░░░ SCAN LINE OVERLAY ░░░ -->
+  <div class="scanline-overlay" aria-hidden="true"></div>
+  <div class="grid-bg" aria-hidden="true"></div>
+
+  <!-- ░░░ NAVBAR ░░░ -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-brand">
+      <span class="brand-icon">⬡</span>
+      <span class="brand-text">DFM<span class="brand-accent">://</span>mirror</span>
+    </div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home" class="nav-link active" data-section="home">Home</a></li>
+      <li><a href="#analyzer" class="nav-link" data-section="analyzer">Analyzer</a></li>
+      <li><a href="#dashboard" class="nav-link" data-section="dashboard">Dashboard</a></li>
+      <li><a href="#suggestions" class="nav-link" data-section="suggestions">Suggestions</a></li>
+    </ul>
+    <div class="nav-status">
+      <span class="status-dot"></span>
+      <span class="status-text" id="navStatusText">SYSTEM READY</span>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ░░░ HERO / HOME ░░░ -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-pulse"></span>
+        CYBER INTELLIGENCE PLATFORM v3.2
+      </div>
+      <h1 class="hero-title">
+        Your Digital<br/>
+        <span class="title-accent">Footprint</span><br/>
+        Exposed.
+      </h1>
+      <p class="hero-subtitle">
+        Analyze your cyber behavior patterns. Identify hidden vulnerabilities.
+        Get personalized threat intelligence before adversaries do.
+      </p>
+      <div class="hero-cta-group">
+        <button class="btn-primary" onclick="scrollToAnalyzer()">
+          <span class="btn-icon">▶</span> Run Analysis
+        </button>
+        <button class="btn-ghost" onclick="showLearnMore()">
+          Learn More ↗
+        </button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-num" id="statThreats">0</span>
+          <span class="stat-label">Threat Vectors</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num" id="statUsers">0</span>
+          <span class="stat-label">Profiles Analyzed</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num" id="statCategories">5</span>
+          <span class="stat-label">Risk Categories</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual" aria-hidden="true">
+      <div class="hex-grid">
+        <div class="hex h1"><span>PWD</span></div>
+        <div class="hex h2"><span>NET</span></div>
+        <div class="hex h3"><span>SOC</span></div>
+        <div class="hex h4"><span>DEV</span></div>
+        <div class="hex h5"><span>PHI</span></div>
+        <div class="hex h6"><span>DATA</span></div>
+      </div>
+      <div class="radar-ring r1"></div>
+      <div class="radar-ring r2"></div>
+      <div class="radar-ring r3"></div>
+      <div class="radar-sweep"></div>
+    </div>
+  </section>
+
+  <!-- ░░░ QUICK INFO TABLE SECTION ░░░ -->
+  <section class="info-section reveal" id="infoSection">
+    <div class="section-header">
+      <span class="section-tag">// THREAT MATRIX</span>
+      <h2 class="section-title">Common Attack Vectors</h2>
+      <p class="section-sub">Understanding how attackers exploit digital footprints</p>
+    </div>
+    <div class="table-wrapper">
+      <table class="threat-table" id="threatTable">
+        <thead>
+          <tr>
+            <th>Vector</th>
+            <th>Risk Icon</th>
+            <th>Description</th>
+            <th>Impact</th>
+            <th>Defense Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr onmouseover="highlightRow(this)" onmouseout="unhighlightRow(this)">
+            <td class="vec-name">Password Reuse</td>
+            <td><img src="https://img.icons8.com/nolan/48/lock.png" alt="lock icon" class="threat-icon" /></td>
+            <td>Using the same password across multiple services</td>
+            <td><span class="impact critical">CRITICAL</span></td>
+            <td>
+              <ul class="action-list">
+                <li>Use a password manager</li>
+                <li>Enable unique passwords per site</li>
+                <li>Audit existing accounts</li>
+              </ul>
+            </td>
+          </tr>
+          <tr onmouseover="highlightRow(this)" onmouseout="unhighlightRow(this)">
+            <td class="vec-name">Phishing</td>
+            <td><img src="https://img.icons8.com/nolan/48/phishing.png" alt="phishing icon" class="threat-icon" /></td>
+            <td>Deceptive emails/links designed to steal credentials</td>
+            <td><span class="impact high">HIGH</span></td>
+            <td>
+              <ul class="action-list">
+                <li>Verify sender domains</li>
+                <li>Avoid clicking unknown links</li>
+                <li>Use email filtering tools</li>
+              </ul>
+            </td>
+          </tr>
+          <tr onmouseover="highlightRow(this)" onmouseout="unhighlightRow(this)">
+            <td class="vec-name">Public Wi-Fi</td>
+            <td><img src="https://img.icons8.com/nolan/48/wifi.png" alt="wifi icon" class="threat-icon" /></td>
+            <td>Unencrypted networks exposing your traffic</td>
+            <td><span class="impact high">HIGH</span></td>
+            <td>
+              <ul class="action-list">
+                <li>Always use a VPN</li>
+                <li>Prefer mobile data</li>
+                <li>Disable auto-connect</li>
+              </ul>
+            </td>
+          </tr>
+          <tr onmouseover="highlightRow(this)" onmouseout="unhighlightRow(this)">
+            <td class="vec-name">Oversharing Online</td>
+            <td><img src="https://img.icons8.com/nolan/48/share.png" alt="share icon" class="threat-icon" /></td>
+            <td>Posting personal details used in social engineering</td>
+            <td><span class="impact medium">MEDIUM</span></td>
+            <td>
+              <ul class="action-list">
+                <li>Audit privacy settings</li>
+                <li>Limit location sharing</li>
+                <li>Think before posting</li>
+              </ul>
+            </td>
+          </tr>
+          <tr onmouseover="highlightRow(this)" onmouseout="unhighlightRow(this)">
+            <td class="vec-name">Unpatched Devices</td>
+            <td><img src="https://img.icons8.com/nolan/48/bug.png" alt="bug icon" class="threat-icon" /></td>
+            <td>Outdated software containing known exploits</td>
+            <td><span class="impact medium">MEDIUM</span></td>
+            <td>
+              <ul class="action-list">
+                <li>Enable auto-updates</li>
+                <li>Check for patches weekly</li>
+                <li>Remove unused apps</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ░░░ ANALYZER SECTION ░░░ -->
+  <section class="analyzer-section reveal" id="analyzer">
+    <div class="section-header">
+      <span class="section-tag">// BEHAVIORAL INPUT</span>
+      <h2 class="section-title">Cyber Behavior Analyzer</h2>
+      <p class="section-sub">Select the behaviors that apply to you. Be honest — this is your mirror.</p>
+    </div>
+
+    <div class="analyzer-layout">
+      <!-- LEFT: User Details Form -->
+      <div class="analyzer-form glass-card">
+        <h3 class="card-title"><span class="card-icon">◈</span> Profile Details</h3>
+        <p class="card-note">Optional — used only for personalized report labeling</p>
+        <div class="form-group">
+          <label class="form-label" for="userName">Display Name</label>
+          <input type="text" id="userName" class="form-input" placeholder="e.g., Agent_X"
+            onselect="onInputSelect(this)" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="userRole">Role / Context</label>
+          <select id="userRole" class="form-input form-select">
+            <option value="personal">Personal User</option>
+            <option value="student">Student</option>
+            <option value="professional">Professional</option>
+            <option value="admin">System Admin</option>
+            <option value="developer">Developer</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="analysisPurpose">Analysis Scope</label>
+          <select id="analysisPurpose" class="form-input form-select">
+            <option value="full">Full Assessment</option>
+            <option value="quick">Quick Scan</option>
+            <option value="targeted">Targeted Review</option>
+          </select>
+        </div>
+        <div class="analysis-time-box">
+          <span class="time-label">Analysis Timestamp:</span>
+          <span class="time-value" id="analysisTimestamp"></span>
+        </div>
+        <div class="search-wrapper">
+          <label class="form-label" for="suggestionSearch">Filter Suggestions</label>
+          <input type="search" id="suggestionSearch" class="form-input search-input"
+            placeholder="Search tips..." 
+            onsearch="handleSearch(this.value)"
+            oninput="handleSearch(this.value)" />
+          <span class="search-icon">⌕</span>
+        </div>
+      </div>
+
+      <!-- RIGHT: Checkbox Groups -->
+      <div class="checkbox-groups">
+
+        <div class="check-card glass-card" data-category="password">
+          <div class="check-card-header">
+            <span class="cat-icon">🔐</span>
+            <h3 class="cat-title">Password Hygiene</h3>
+            <span class="cat-badge" id="badge-password">0</span>
+          </div>
+          <div class="check-items">
+            <label class="check-label">
+              <input type="checkbox" name="password" value="reuse" class="check-input" onchange="updateBadge('password')" />
+              <span class="check-custom"></span>
+              I reuse the same password on multiple sites
+            </label>
+            <label class="check-label">
+              <input type="checkbox" name="password" value="weak" class="check-input" onchange="updateBadge('password')" />
+              <span class="check-custom"></span>
+              My passwords are under 10 characters
+            </label>
+            <label class="check-label">
+              <input type="checkbox" name="password" value="no2fa" class="check-input" onchange="updateBadge('password')" />
+              <span class="check-custom"></span>
+              I don't use two-factor authentication
+            </label>
+            <label class="check-label">
+              <input type="checkbox" name="password" value="shared" class="check-input" onchange="updateBadge('password')" />
+              <span class="check-custom"></span>
+              I've shared passwords with others
+            </label>
+            <label class="check-label">
+              <input type="checkbox" name="password" value="nomanager" class="check-input" onchange="updateBadge('password')" />
+              <span class="check-custom"></span>
+              I don't use a password manager
+            </label>
+          </div>
+        </div>
+
+        <div class="check-card glass-card" data-category="social">
+          <div class="check-card-header">
+            <span class="cat-icon">📡</span>
+            <h3 class="cat-title">Social Behavior</h3>
+            <span class="cat-badge" id="badge-social">0</span>
+          </div>
+          <div class="check-items">
+            <label class="check-label">
+              <input type="checkbox" name="social" value="overshare" class="check-input" onchange="updateBadge('social')" />
+              <span class="check-custom"></span>
+              I post personal details (location, birthday, workplace) online
+            </label>
+            <label class="check-label">
+              <input type="checkbox" name="social" value="publicprofile" class="check-input" onchange="updateBadge('social')" />
+              <span class="check-custom"></span>
+              My social media profiles are fully public
+            </label>
+            <label class="check-label">
+              <input type="checkbox" name="social" value="acceptall" class="check-input" onchange="updateBadge('social')" />
+              <span class="check-custom"></span>
+              I accept connection requests from strangers
+            </label>
+            <label class="check-label">
+              <input type="checkbox" name="social" value="realname" class="check-input" onchange="updateBadge('social')" />
+              <span class="check-custom"></span>
+              I use my real full name everywhere online
+            </label>
+            <label class="check-label">
+              <input type="checkbox" name="social" value="geotagging" class="check-input" onchange="updateBadge('social')" />
+              <span class="check-custom"></span>
+              I share real-time location or geotag photos
+            </label>
+          </div>
+        </div>
+
+        <div class="check-card glass-card" data-category="network">
+          <div class="check-card-header">
+            <span class="cat-icon">🌐</span>
+            <h3 class="cat-title">Network Safety</h3>
+            <span class="cat-badge" id="badge-network">0</span>
+          </div>
+          <div class="check-items">
+            <label class="check-label">
+              <input type="checkbox" name="network" value="publicwifi" class="check-input" onchange="updateBadge('network')" />
+              <span class="check-custom"></span>
+              I regularly use public Wi-Fi without a VPN
+            </label>
+            <label class="check-label">
+              <input type="checkbox" name="network" value="novpn" class="check-input" onchange="updateBadge('network')" />
+              <span class="check-custom"></span>
+              I don't use any VPN service
+            </label>
+            <label class="check-label">
+              <input type="checkbox" name="network" value="httpsite" class="check-input" onchange="updateBadge('network')" />
+              <span class="check-custom"></span>
+              I visit HTTP (non-HTTPS) websites regularly
+            </label>
+            <label class="check-label">
+              <input type="checkbox" name="network" value="autoconnect" class="check-input" onchange="updateBadge('network')" />
+              <span class="check-custom"></span>
+              My device auto-connects to open Wi-Fi networks
+            </label>
+            <label class="check-label">
+              <input type="checkbox" name="network" value="routerdefault" class="check-input" onchange="updateBadge('network')" />
+              <span class="check-custom"></span>
+              I've never changed my router's default password
+            </label>
+          </div>
+        </div>
+
+        <div class="check-card glass-card" data-category="phishing">
+          <div class="check-card-header">
+            <span class="cat-icon">🎣</span>
+            <h3 class="cat-title">Phishing Awareness</h3>
+            <span class="cat-badge" id="badge-phishing">0</span>
+          </div>
+          <div class="check-items">
+            <label class="check-label">
+              <input type="checkbox" name="phishing" value="clicklinks" class="check-input" onchange="updateBadge('phishing')" />
+              <span class="check-custom"></span>
+              I click links in emails without verifying the sender
+            </label>
+            <label class="check-label">
+              <input type="checkbox" name="phishing" value="download" class="check-input" onchange="updateBadge('phishing')" />
+              <span class="check-custom"></span>
+              I download attachments from unknown sources
+            </label>
+            <label class="check-label">
+              <input type="checkbox" name="phishing" value="urgency" class="check-input" onchange="updateBadge('phishing')" />
+              <span class="check-custom"></span>
+              I've responded to "urgent account" email requests
+            </label>
+            <label class="check-label">
+              <input type="checkbox" name="phishing" value="noverify" class="check-input" onchange="updateBadge('phishing')" />
+              <span class="check-custom"></span>
+              I don't verify website URLs before entering credentials
+            </label>
+            <label class="check-label">
+              <input type="checkbox" name="phishing" value="popup" class="check-input" onchange="updateBadge('phishing')" />
+              <span class="check-custom"></span>
+              I've clicked suspicious pop-up ads or warnings
+            </label>
+          </div>
+        </div>
+
+        <div class="check-card glass-card" data-category="device">
+          <div class="check-card-header">
+            <span class="cat-icon">💻</span>
+            <h3 class="cat-title">Device Security</h3>
+            <span class="cat-badge" id="badge-device">0</span>
+          </div>
+          <div class="check-items">
+            <label class="check-label">
+              <input type="checkbox" name="device" value="noupdate" class="check-input" onchange="updateBadge('device')" />
+              <span class="check-custom"></span>
+              I delay or skip OS and software updates
+            </label>
+            <label class="check-label">
+              <input type="checkbox" name="device" value="noantivirus" class="check-input" onchange="updateBadge('device')" />
+              <span class="check-custom"></span>
+              I don't have antivirus/anti-malware software
+            </label>
+            <label class="check-label">
+              <input type="checkbox" name="device" value="unlock" class="check-input" onchange="updateBadge('device')" />
+              <span class="check-custom"></span>
+              My devices have no screen lock / PIN
+            </label>
+            <label class="check-label">
+              <input type="checkbox" name="device" value="nobackup" class="check-input" onchange="updateBadge('device')" />
+              <span class="check-custom"></span>
+              I don't regularly back up my data
+            </label>
+            <label class="check-label">
+              <input type="checkbox" name="device" value="unknownapps" class="check-input" onchange="updateBadge('device')" />
+              <span class="check-custom"></span>
+              I install apps from unofficial/unknown sources
+            </label>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SUBMIT AREA -->
+    <div class="submit-area">
+      <div class="total-score-preview">
+        <span class="preview-label">Risk Indicators Selected:</span>
+        <span class="preview-count" id="totalSelected">0</span>
+        <span class="preview-label">/ 25</span>
+      </div>
+      <button class="btn-analyze" id="analyzeBtn" onclick="runAnalysis()">
+        <span class="btn-scan-icon">⬡</span>
+        <span class="btn-text">ANALYZE MY FOOTPRINT</span>
+        <span class="btn-arrow">→</span>
+      </button>
+      <button class="btn-reset" onclick="resetForm()">↺ Reset</button>
+    </div>
+
+  </section>
+
+  <!-- ░░░ LOADING OVERLAY ░░░ -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-box">
+      <div class="loading-spinner">
+        <div class="spinner-ring"></div>
+        <div class="spinner-ring r2"></div>
+        <div class="spinner-ring r3"></div>
+        <span class="spinner-icon">⬡</span>
+      </div>
+      <p class="loading-text" id="loadingText">Initializing scan...</p>
+      <div class="loading-bar">
+        <div class="loading-fill" id="loadingFill"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ░░░ DASHBOARD SECTION ░░░ -->
+  <section class="dashboard-section reveal" id="dashboard">
+    <div class="section-header">
+      <span class="section-tag">// INTELLIGENCE REPORT</span>
+      <h2 class="section-title">Your Behavioral Profile</h2>
+      <p class="section-sub">Comprehensive threat analysis based on your digital behavior</p>
+    </div>
+
+    <div class="dashboard-placeholder" id="dashboardPlaceholder">
+      <div class="placeholder-icon">⬡</div>
+      <p>Run the analyzer above to generate your personalized intelligence report.</p>
+    </div>
+
+    <div class="dashboard-content" id="dashboardContent" style="display:none;">
+
+      <!-- TOP METRICS ROW -->
+      <div class="metrics-row">
+        <div class="metric-card glass-card" id="metricRisk">
+          <span class="metric-label">Overall Risk Score</span>
+          <div class="metric-value-wrap">
+            <span class="metric-value" id="metricRiskValue">—</span>
+            <span class="metric-unit">/ 100</span>
+          </div>
+          <div class="metric-bar">
+            <div class="metric-fill" id="metricRiskFill"></div>
+          </div>
+          <span class="metric-tag" id="metricRiskTag">—</span>
+        </div>
+        <div class="metric-card glass-card" id="metricVulnerable">
+          <span class="metric-label">Vulnerable Categories</span>
+          <div class="metric-value-wrap">
+            <span class="metric-value" id="metricVulnValue">—</span>
+            <span class="metric-unit">/ 5</span>
+          </div>
+          <div class="vuln-icons" id="vulnIcons"></div>
+          <span class="metric-tag" id="metricVulnTag">—</span>
+        </div>
+        <div class="metric-card glass-card" id="metricDanger">
+          <span class="metric-label">Highest Risk Area</span>
+          <div class="metric-value-wrap danger-area">
+            <span class="metric-value danger-val" id="metricDangerValue">—</span>
+          </div>
+          <span class="metric-tag" id="metricDangerTag">Most critical to address</span>
+        </div>
+        <div class="metric-card glass-card">
+          <span class="metric-label">Analysis Confidence</span>
+          <div class="metric-value-wrap">
+            <span class="metric-value" id="metricConfidence">—</span>
+            <span class="metric-unit">%</span>
+          </div>
+          <span class="metric-tag">Based on <span id="confBasis">0</span> data points</span>
+        </div>
+      </div>
+
+      <!-- CHARTS ROW -->
+      <div class="charts-row">
+        <div class="chart-card glass-card">
+          <h3 class="chart-title">Risk by Category</h3>
+          <p class="chart-sub">Score per behavior domain (0–100)</p>
+          <div class="chart-container">
+            <canvas id="barChart"></canvas>
+          </div>
+        </div>
+        <div class="chart-card glass-card">
+          <h3 class="chart-title">Threat Radar</h3>
+          <p class="chart-sub">Multi-dimensional vulnerability profile</p>
+          <div class="chart-container">
+            <canvas id="radarChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- RISK HEATMAP -->
+      <div class="heatmap-card glass-card">
+        <h3 class="chart-title">Risk Heatmap — Behavior Cluster Analysis</h3>
+        <p class="chart-sub">Color intensity reflects combined threat weight in each behavior area</p>
+        <div class="heatmap-grid" id="heatmapGrid"></div>
+      </div>
+
+      <!-- ATTACK FLOW -->
+      <div class="attack-flow-card glass-card">
+        <h3 class="chart-title">Attack Chain Simulation</h3>
+        <p class="chart-sub">How vulnerabilities can cascade into a full breach</p>
+        <div class="attack-flow" id="attackFlow">
+          <div class="flow-node" id="flowNode1">
+            <div class="node-icon">🔐</div>
+            <div class="node-label">Password<br/>Compromise</div>
+            <div class="node-risk" id="nodeRisk1">—</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node" id="flowNode2">
+            <div class="node-icon">📧</div>
+            <div class="node-label">Email<br/>Account</div>
+            <div class="node-risk" id="nodeRisk2">—</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node" id="flowNode3">
+            <div class="node-icon">🏦</div>
+            <div class="node-label">Banking<br/>Access</div>
+            <div class="node-risk" id="nodeRisk3">—</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node" id="flowNode4">
+            <div class="node-icon">💀</div>
+            <div class="node-label">Identity<br/>Theft</div>
+            <div class="node-risk" id="nodeRisk4">—</div>
+          </div>
+        </div>
+        <p class="flow-note" id="flowNote"></p>
+      </div>
+
+      <!-- BEHAVIORAL PROFILE TEXT -->
+      <div class="profile-card glass-card">
+        <h3 class="chart-title">◈ Intelligence Summary</h3>
+        <div class="profile-body" id="profileBody">
+          <div class="profile-row">
+            <span class="profile-key">Behavioral Profile:</span>
+            <span class="profile-val accent" id="profileType">—</span>
+          </div>
+          <div class="profile-row">
+            <span class="profile-key">Primary Threat Vector:</span>
+            <span class="profile-val warn" id="profileThreat">—</span>
+          </div>
+          <div class="profile-row">
+            <span class="profile-key">Exploitation Likelihood:</span>
+            <span class="profile-val" id="profileLikelihood">—</span>
+          </div>
+          <div class="profile-row">
+            <span class="profile-key">Most Dangerous Habit:</span>
+            <span class="profile-val danger" id="profileDanger">—</span>
+          </div>
+          <div class="profile-row">
+            <span class="profile-key">Recommended Priority:</span>
+            <span class="profile-val" id="profilePriority">—</span>
+          </div>
+          <div class="profile-summary" id="profileSummary"></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ░░░ SUGGESTIONS SECTION ░░░ -->
+  <section class="suggestions-section reveal" id="suggestions">
+    <div class="section-header">
+      <span class="section-tag">// REMEDIATION PLAN</span>
+      <h2 class="section-title">Personalized Action Plan</h2>
+      <p class="section-sub">Prioritized recommendations to reduce your digital exposure</p>
+    </div>
+
+    <div class="suggestions-placeholder" id="suggestionsPlaceholder">
+      <div class="placeholder-icon">⬡</div>
+      <p>Complete your analysis to receive personalized security recommendations.</p>
+    </div>
+
+    <div class="suggestions-content" id="suggestionsContent" style="display:none;">
+
+      <div class="top3-header">
+        <span class="top3-label">⚑ TOP 3 CRITICAL IMPROVEMENTS</span>
+      </div>
+
+      <div class="top3-grid" id="top3Grid">
+        <!-- Generated by JS -->
+      </div>
+
+      <div class="all-suggestions" id="allSuggestions">
+        <!-- Filtered suggestion cards generated by JS -->
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ░░░ FOOTER ░░░ -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="brand-icon">⬡</span>
+        <span class="footer-brand-text">DFM<span class="brand-accent">://</span>mirror</span>
+      </div>
+      <p class="footer-tagline">Intelligence for the digital age. Protect your footprint.</p>
+      <div class="footer-links">
+        <a href="#home">Home</a>
+        <a href="#analyzer">Analyzer</a>
+        <a href="#dashboard">Dashboard</a>
+        <a href="#suggestions">Suggestions</a>
+      </div>
+      <p class="footer-copy">Digital Footprint Mirror © 2026 — All rights reserved</p>
+    </div>
+    <div class="footer-bg-text" aria-hidden="true">DFM</div>
+  </footer>
+
+  <script src="dfm.js"></script>
+</body>
+</html>
